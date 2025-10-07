@@ -1,0 +1,1297 @@
+
+       
+    <!-- 3D Animated Background Canvas -->
+    <canvas id="bg-3d-canvas"></canvas>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Lottie Player CDN -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin">
+    <title>Karmayogi Path - Governance GPS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mission-map-feedback-demo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- model-viewer script loaded in head for reliability -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+
+
+        <!-- Unique Orange Gradient Animated Curtain Loader -->
+        <div id="curtain-loader">
+            <div class="curtain-orange left"></div>
+            <div class="curtain-orange right"></div>
+                    <div class="curtain-center-logo">
+                        <svg class="curtain-sun" width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="130" cy="130" r="120" stroke="#fff" stroke-width="4" fill="url(#orangeGrad)"/>
+                            <defs>
+                                <radialGradient id="orangeGrad" cx="0.5" cy="0.5" r="0.7">
+                                    <stop offset="0%" stop-color="#fffbe7"/>
+                                    <stop offset="60%" stop-color="#ff9800"/>
+                                    <stop offset="100%" stop-color="#ff6d00"/>
+                                </radialGradient>
+                            </defs>
+                            <g class="sun-rays">
+                                <ellipse cx="130" cy="30" rx="18" ry="60" fill="url(#sunRayGrad)" opacity="0.45">
+                                    <animate attributeName="opacity" values="0.45;0.9;0.45" dur="2.2s" repeatCount="indefinite"/>
+                                </ellipse>
+                                <ellipse cx="130" cy="230" rx="18" ry="60" fill="url(#sunRayGrad)" opacity="0.45"/>
+                                <ellipse cx="30" cy="130" rx="60" ry="18" fill="url(#sunRayGrad)" opacity="0.45"/>
+                                <ellipse cx="230" cy="130" rx="60" ry="18" fill="url(#sunRayGrad)" opacity="0.45"/>
+                                <ellipse cx="60" cy="60" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
+                                <ellipse cx="200" cy="60" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
+                                <ellipse cx="60" cy="200" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
+                                <ellipse cx="200" cy="200" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
+                                <defs>
+                                    <radialGradient id="sunRayGrad" cx="0.5" cy="0.5" r="0.7">
+                                        <stop offset="0%" stop-color="#fffbe7"/>
+                                        <stop offset="100%" stop-color="#ff9800" stop-opacity="0.2"/>
+                                    </radialGradient>
+                                </defs>
+                            </g>
+                        </svg>
+                        <div class="curtain-title">Karmayogi Path</div>
+                    </div>
+        </div>
+
+
+
+    <!-- Cursor Follower -->
+    <div id="cursor-follower"></div>
+
+
+        <!-- Animated SVG Background Blend -->
+        <div class="animated-bg-blend">
+            <svg width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="none" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-2;pointer-events:none;">
+                <defs>
+                    <radialGradient id="bg1" cx="30%" cy="20%" r="80%" fx="30%" fy="20%">
+                        <stop offset="0%" stop-color="#b388ff" stop-opacity="0.45"/>
+                        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="bg2" cx="80%" cy="80%" r="70%" fx="80%" fy="80%">
+                        <stop offset="0%" stop-color="#00eaff" stop-opacity="0.32"/>
+                        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <ellipse cx="600" cy="300" rx="600" ry="320" fill="url(#bg1)">
+                    <animate attributeName="cx" values="600;900;600" dur="12s" repeatCount="indefinite"/>
+                </ellipse>
+                <ellipse cx="1500" cy="900" rx="500" ry="260" fill="url(#bg2)">
+                    <animate attributeName="cy" values="900;700;900" dur="10s" repeatCount="indefinite"/>
+                </ellipse>
+            </svg>
+            <div class="floating-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+                <div class="shape shape4"></div>
+                <div class="shape shape5"></div>
+            </div>
+        </div>
+                <script>
+                        // Celebration: Paper bomb blast effect from sides, slow and synchronized with sound
+                                function createPaperBombsSync(audio) {
+                                    const confettiContainer = document.querySelector('.celebration-confetti');
+                                    if (!confettiContainer) return;
+                                    confettiContainer.innerHTML = '';
+                                    // Paper bombs from all 4 directions
+                                    setTimeout(() => {
+                                        const directions = [
+                                            {x: '-40px', y: () => (5 + Math.random() * 90) + 'vh', dx: '1', dy: '0'}, // left
+                                            {x: 'calc(100% + 40px)', y: () => (5 + Math.random() * 90) + 'vh', dx: '-1', dy: '0'}, // right
+                                            {x: () => (5 + Math.random() * 90) + 'vw', y: '-40px', dx: '0', dy: '1'}, // top
+                                            {x: () => (5 + Math.random() * 90) + 'vw', y: 'calc(100% + 40px)', dx: '0', dy: '-1'} // bottom
+                                        ];
+                                        for (let d = 0; d < directions.length; d++) {
+                                            for (let i = 0; i < 14; i++) {
+                                                const bomb = document.createElement('div');
+                                                bomb.className = 'paper-bomb';
+                                                bomb.style.left = typeof directions[d].x === 'function' ? directions[d].x() : directions[d].x;
+                                                bomb.style.top = typeof directions[d].y === 'function' ? directions[d].y() : directions[d].y;
+                                                bomb.style.background = d % 2 === 0 ? 'linear-gradient(135deg,#38bdf8,#a78bfa)' : 'linear-gradient(135deg,#fbbf24,#f472b6)';
+                                                bomb.style.animationDelay = (Math.random() * 0.25) + 's';
+                                                bomb.style.setProperty('--bomb-dir-x', directions[d].dx);
+                                                bomb.style.setProperty('--bomb-dir-y', directions[d].dy);
+                                                confettiContainer.appendChild(bomb);
+                                            }
+                                        }
+                                        // Paper pieces (covering screen, slower)
+                                        for (let i = 0; i < 80; i++) {
+                                            const piece = document.createElement('div');
+                                            piece.className = 'confetti-piece';
+                                            piece.style.left = Math.random() * 100 + 'vw';
+                                            piece.style.top = '-40px';
+                                            piece.style.background = `linear-gradient(135deg, #38bdf8, #a78bfa, #fbbf24, #f472b6)`;
+                                            piece.style.animationDelay = (0.5 + Math.random() * 1.2) + 's';
+                                            confettiContainer.appendChild(piece);
+                                        }
+                                    }, audio ? 200 : 0);
+                                }
+                        // Patch showCelebration to use paper bombs and sync with sound
+                                window.showCelebration = async function(objective) {
+                                    const overlay = document.getElementById('celebrationOverlay');
+                                    const msg = document.getElementById('celebrationMsg');
+                                    const benefits = document.getElementById('celebrationBenefits');
+                                    if (!overlay || !msg || !benefits) return;
+                                    overlay.style.animation = 'none'; overlay.offsetHeight; overlay.style.animation = null;
+                                    document.body.style.overflow = 'hidden';
+                                    msg.textContent = `Objective "${objective.title}" completed! Here are your benefits:`;
+                                    const benefitList = [
+                                        'Society benefited: Improved public service delivery',
+                                        'Increased citizen satisfaction',
+                                        'Enhanced transparency and accountability',
+                                        'Boosted team morale and collaboration',
+                                        'Positive impact on national mission goals',
+                                        'Recognition for your contribution to society',
+                                        'Performance score increased',
+                                        'Eligible for new rewards',
+                                        'Motivation boost!'
+                                    ];
+                                    benefits.innerHTML = benefitList.map(b => `<li>✅ ${b}</li>`).join('');
+                                    overlay.style.display = 'flex';
+                                    // Play sound, then trigger paper bombs exactly when sound starts
+                                    const audio = new Audio('https://soundbible.com/mp3/Ta Da-SoundBible.com-1884170640.mp3');
+                                    audio.volume = 0.5;
+                                    audio.onplay = function() { createPaperBombsSync(audio); };
+                                    audio.play().catch(()=>{ createPaperBombsSync(audio); });
+                                };
+                </script>
+
+
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon theme-icon"></i>
+    </button>
+
+    <!-- HOME PAGE -->
+    <div id="home-page">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <div class="brand-icon spark-animate">
+                        <i class="fas fa-route"></i>
+                        <span class="spark"></span>
+                    </div>
+                    <span class="brand-text">Karmayogi Path</span>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <button class="btn-signin" onclick="showLogin()">
+                    Sign In <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-image animate-slide-in" style="display:flex;flex-direction:row;align-items:center;gap:2vw;">
+                    <div class="hero-content animate-fade-in" style="margin-right:5vw; margin-left:2vw; align-items:flex-start; text-align:left;">
+                        <h1 class="hero-title stylish-hero-title">
+                            <span class="gradient-text">Karmayogi Path</span>
+                            <span class="hero-flare"></span>
+                        </h1>
+                        <div class="hero-typewriter">
+                            <span id="heroTypewriter"></span>
+                            <span class="typewriter-cursor">|</span>
+                        </div>
+                        <div class="hero-buttons">
+                            <button class="btn-primary" onclick="showLogin()">
+                                Get Started <i class="fas fa-rocket"></i>
+                            </button>
+                            <button class="btn-secondary">
+                                Learn More <i class="fas fa-play-circle"></i>
+                            </button>
+                        </div>
+                        <div class="hero-stats stylish-hero-stats">
+                            <div class="stat-item animated-stat" data-target="10000">
+                                <h3>0</h3>
+                                <p>Active Users</p>
+                            </div>
+                            <div class="stat-item animated-stat" data-target="50000">
+                                <h3>0</h3>
+                                <p>Objectives Tracked</p>
+                            </div>
+                            <div class="stat-item animated-stat" data-target="95" data-suffix="%">
+                                <h3>0%</h3>
+                                <p>Satisfaction Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 3D Man Working on Laptop (reliable GLB) on the right -->
+                    <div style="min-width:220px;max-width:320px;width:24vw;height:320px;display:flex;align-items:center;justify-content:center;">
+                        <model-viewer id="hero-3d-worker" src="https://models.readyplayer.me/64e4e2e7e7e7e70008e7e7e7.glb" alt="3D Man Working on Laptop" camera-controls auto-rotate style="width:100%;height:320px;background:transparent;" shadow-intensity="1" exposure="1.1"></model-viewer>
+                        <model-viewer id="hero-3d-worker" src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/AnimatedCube/glTF-Binary/AnimatedCube.glb" alt="3D Man Working on Laptop" camera-controls auto-rotate style="width:100%;height:320px;background:transparent;" shadow-intensity="1" exposure="1.1"></model-viewer>
+                        <model-viewer id="hero-3d-worker" src="https://models.babylonjs.com/CesiumMan.glb" alt="3D Human Model" camera-controls auto-rotate style="width:100%;height:320px;background:transparent;" shadow-intensity="1" exposure="1.1"></model-viewer>
+                        <!-- Lottie Animation: Man working on laptop (local file) -->
+                        <div style="display:flex;align-items:center;height:100%;">
+                            <lottie-player src="media/Man Working on Laptop in Office.json" background="transparent" speed="1" style="height:720px;max-height:720px;min-width:480px;width:auto;max-width:900px;margin-left:auto;display:block;" loop autoplay></lottie-player>
+                        </div>
+                    </div>
+                </div>
+                <!-- Moved Goal Tracking card below hero image -->
+
+            </div>
+        </section>
+
+        <!-- About Section -->
+    <section class="about-section section-box" id="about" style="position:relative;">
+            <h1 class="section-title features-heading" style="text-align:center; margin-top:0; margin-bottom:0; padding-top:0; padding-bottom:0;">About Us</h1>
+            <br>
+            <div class="section-header" style="text-align:center; margin-top:0; margin-bottom:32px; position:relative; z-index:2;">
+                <h3 class="section-tag" style="margin-bottom: 5px; font-weight: 700; color: var(--primary); text-align:center;">Transforming Governance Through Technology</h3>
+                <p class="section-subtitle" style="margin-top: 0; margin-bottom:8px; font-size: 1.05rem; color: var(--text-secondary); text-align:center;">A revolutionary platform designed to align individual performance with national missions</p>
+                <br>
+            </div>
+            <!-- 3D Model Animation for About Us -->
+            <div class="about-3d-model" style="position:absolute; right:2vw; top:10px; width:260px; height:320px; z-index:1; pointer-events:none; opacity:0.92;">
+                <model-viewer src="https://models.babylonjs.com/CesiumMan.glb" alt="3D About Us" camera-controls auto-rotate style="width:100%; height:100%; background:transparent;" exposure="1.1" shadow-intensity="1" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
+            </div>
+            <div class="about-grid bounce-in-grid" style="position:relative; z-index:2;">
+                <div class="about-card bounce-in-card">
+                    <div class="about-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Mission-Aligned</h3>
+                    <p>Connect individual work directly to national missions and strategic objectives</p>
+                </div>
+                <div class="about-card bounce-in-card">
+                    <div class="about-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Performance Visualization</h3>
+                    <p>Intuitive dashboards to track progress and celebrate achievements</p>
+                </div>
+                <div class="about-card bounce-in-card">
+                    <div class="about-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Reliable</h3>
+                    <p>Enterprise-grade security ensuring data protection and privacy</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+       <div class="features-section-wrapper">
+        <section class="features-section section-box" id="features">
+          <h1 class="section-title features-heading" style="text-align:center; margin-top:0; margin-bottom:7px;">Features</h1>
+          <div class="section-header">
+              <h3 class="section-tag" style="margin-bottom: 2px; font-weight: 700; color: var(--primary); text-align:center;">Comprehensive Solution Suite</h3>
+              <p class="section-subtitle" style="margin-top: 0; font-size: 1.05rem; color: var(--text-secondary);">Powered by AI and designed for modern governance</p>
+          </div>
+          <div class="features-slideshow" id="featuresSlideshow">
+             <div class="feature-slides-wrapper">
+                    <div class="feature-slide active">
+                        <div class="feature-icon purple"><i class="fas fa-brain"></i></div>
+                        <h3>AI-Powered PVS</h3>
+                        <p>Public Value Score calculates impact based on efficiency and quality to prioritize genuine impact</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon blue"><i class="fas fa-project-diagram"></i></div>
+                        <h3>Mission Cascading Objectives</h3>
+                        <p>Link individual tasks to important national goals with clear mission alignment</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon green"><i class="fas fa-chart-line"></i></div>
+                        <h3>Proactive Bottleneck Forecasting</h3>
+                        <p>Predicts workflow delays before they materialize using advanced AI algorithms</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon orange"><i class="fas fa-trophy"></i></div>
+                        <h3>Engagement Engine</h3>
+                        <p>Increases motivation and purpose by showing clear contribution to national goals</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon pink"><i class="fas fa-sync-alt"></i></div>
+                        <h3>Real-time Dashboard</h3>
+                        <p>Dynamic visualization with data-driven predictive insights for managers</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon teal"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Data Privacy & Security</h3>
+                        <p>Enterprise-grade security with data authenticity verification and encryption</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon purple"><i class="fas fa-plug"></i></div>
+                        <h3>Seamless Integration</h3>
+                        <p>REST APIs for seamless connection with existing e-Office platforms</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon blue"><i class="fas fa-users-cog"></i></div>
+                        <h3>Team Management</h3>
+                        <p>Effective team guidance and development with proactive workflow management</p>
+                    </div>
+                    <div class="feature-slide">
+                        <div class="feature-icon green"><i class="fas fa-coins"></i></div>
+                        <h3>CKP Points System</h3>
+                        <p>Competency Karma Points for recognition of quality and collaborative work</p>
+                    </div>
+                </div>
+                <div class="feature-slideshow-controls">
+                    <button class="feature-arrow" id="featurePrev" aria-label="Previous Feature"><i class="fas fa-chevron-left"></i></button>
+                    <button class="feature-pause" id="featurePause" aria-label="Pause Slideshow"><i class="fas fa-pause"></i></button>
+                    <button class="feature-arrow" id="featureNext" aria-label="Next Feature"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="feature-slide-indicators" id="featureIndicators"></div>
+                        </section>
+                    </div>
+            <!-- Improved Impact Section -->
+                <div class="impact-section-wrapper">
+                    <div class="impact-section section-box" id="impact">
+                    <h1 class="section-title features-heading" style="text-align:center; margin-top:0; margin-bottom:0;">Potential Impact</h1>
+                    <br>
+        
+                    <div class="section-header" style="text-align:center; margin-top:0; margin-bottom:28px;">
+                        <h3 class="section-tag" style="margin-bottom: 5px; font-weight: 700; color: var(--primary); text-align:center;">Driving Real Change in Governance</h3>
+                        <p class="section-subtitle" style="margin-top: 0; margin-bottom:8px; font-size: 1.18rem; color: var(--text-secondary); text-align:center;">Karmayogi Path delivers measurable benefits for the economy, governance, and society.</p>
+                    </div>
+                    <div class="impact-slideshow" id="impactSlideshow">
+                        <div class="impact-slide active">
+                            <div class="about-card bounce-in-card">
+                                <div class="about-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <h3>Economic Growth</h3>
+                                <p>Boosts efficiency, reduces delays, and saves public funds through optimized resource allocation and digital transformation.</p>
+                            </div>
+                        </div>
+                        <div class="impact-slide">
+                            <div class="about-card bounce-in-card">
+                                <div class="about-icon">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <h3>Transparent Governance</h3>
+                                <p>Promotes accountability, data-driven decisions, and a culture of continuous improvement in public service.</p>
+                            </div>
+                        </div>
+                        <div class="impact-slide">
+                            <div class="about-card bounce-in-card">
+                                <div class="about-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <h3>Social Impact</h3>
+                                <p>Delivers faster, more reliable public services, raising citizen satisfaction and trust in government.</p>
+                            </div>
+                        </div>
+                        <div class="impact-slide-indicators" id="impactIndicators"></div>
+                    </div>
+            </div>
+        </div>
+        </section>
+
+        <!-- Real Impact Section - UNIQUE FEATURE -->
+        <section class="real-impact-section section-box" id="real-impact">
+            <div class="section-header">
+                <span class="section-tag">Real Impact in Action</span>
+                <h2 class="section-title">See How Your Work Changes Lives</h2>
+                <p class="section-subtitle">Every task you complete creates measurable benefits for citizens</p>
+            </div>
+            
+            <div class="impact-showcase">
+                <div class="impact-counter-grid">
+                    <div class="impact-counter animate-counter">
+                        <div class="counter-icon">👥</div>
+                        <div class="counter-number" data-target="245000">0</div>
+                        <div class="counter-label">Citizens Directly Helped</div>
+                        <div class="counter-example">Through digital service improvements</div>
+                    </div>
+                    <div class="impact-counter animate-counter">
+                        <div class="counter-icon">💰</div>
+                        <div class="counter-number" data-target="12.5">0</div>
+                        <div class="counter-suffix">Crores</div>
+                        <div class="counter-label">Public Money Saved</div>
+                        <div class="counter-example">By eliminating redundant processes</div>
+                    </div>
+                    <div class="impact-counter animate-counter">
+                        <div class="counter-icon">⚡</div>
+                        <div class="counter-number" data-target="45">0</div>
+                        <div class="counter-suffix">Days</div>
+                        <div class="counter-label">Average Time Reduced</div>
+                        <div class="counter-example">In government service delivery</div>
+                    </div>
+                    <div class="impact-counter animate-counter">
+                        <div class="counter-icon">🎯</div>
+                        <div class="counter-number" data-target="92">0</div>
+                        <div class="counter-suffix">%</div>
+                        <div class="counter-label">Mission Success Rate</div>
+                        <div class="counter-example">National objectives achieved</div>
+                    </div>
+                </div>
+
+                <div class="impact-testimonial">
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">"Thanks to the new digital system, I got my certificate in just 2 hours instead of 15 days!"</div>
+                        <div class="testimonial-author">- Rajesh Kumar, Small Business Owner</div>
+                        <div class="testimonial-impact">Impact of: Digital Service Standards Implementation</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+ 
+
+        <!-- Citizen Feedback Section (Home Page, moved before Contact) -->
+        <section class="section-box feedback-section animate-fade-in" id="citizen-feedback-home" style="max-width:820px;margin:32px auto 56px auto;">
+            <h1 class="section-title" style="text-align:center;margin-bottom:0.5em;">Citizen Feedback</h1>
+            <p class="section-subtitle" style="text-align:center;color:var(--text-secondary);margin-bottom:1.5em;">Share your thoughts and help us improve government services for everyone.</p>
+            <div class="feedback-flex" style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center;">
+                <form id="citizenFeedbackForm" class="feedback-form" style="flex:1 1 320px;max-width:400px;background:#fffbe7;border-radius:18px;padding:32px 28px;box-shadow:0 2px 16px 0 rgba(251,191,36,0.08);display:flex;flex-direction:column;gap:18px;">
+                    <div style="font-size:1.2em;font-weight:700;color:#fbbf24;margin-bottom:8px;"><i class="fas fa-comment-dots"></i> Your Feedback</div>
+                    <input type="text" id="citizenName" placeholder="Your Name (optional)" style="padding:12px 16px;border-radius:8px;border:1.5px solid #ffe082;font-size:1em;">
+                    <textarea id="citizenFeedback" placeholder="Your feedback for government services..." required style="padding:14px 16px;border-radius:8px;border:1.5px solid #ffe082;min-height:70px;font-size:1em;"></textarea>
+                    <button type="submit" class="btn btn-primary" style="align-self:flex-start;background:#fbbf24;color:#fff;font-weight:700;padding:10px 22px;border-radius:8px;font-size:1.08em;">Submit <i class="fas fa-paper-plane"></i></button>
+                </form>
+                <div class="feedback-list-container" style="flex:1 1 320px;max-width:400px;">
+                    <div style="font-size:1.2em;font-weight:700;color:#38bdf8;margin-bottom:8px;"><i class="fas fa-users"></i> Recent Feedback</div>
+                    <div id="citizenFeedbackList" class="feedback-list" style="min-height:120px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section section-box" id="contact">
+            <div class="section-header">
+                <span class="section-tag">Contact Us</span>
+                <h2 class="section-title">Get in Touch</h2>
+                <br>
+                <p class="section-subtitle">Have questions? Our team is here to help</p>
+            </div>
+            <div class="contact-form-wrapper">
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" class="form-input">
+                    <input type="email" placeholder="Your Email" class="form-input">
+                    <textarea placeholder="Your Message" class="form-textarea"></textarea>
+                    <button type="submit" class="btn-primary">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <span>Karmayogi Path</span>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scrolling Copyright Text -->
+        <div class="copyright-scroll">
+            <div class="copyright-text">
+                Karmayogi Path &copy; 2024 Karmayogi Path. All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN PAGE -->
+    <div id="login-page" class="page-hidden">
+        <div class="login-container">
+            <div class="login-box animate-scale-in">
+                <div class="login-header">
+                    <div class="login-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to access your dashboard</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="loginEmail" placeholder="Enter your email" value="vaishnavi.gupta@gov.in" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" value="karmayogi2024" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary btn-full">
+                        Sign In <i class="fas fa-sign-in-alt"></i>
+                    </button>
+                </form>
+                <div class="demo-credentials">
+                    <p class="demo-title">Demo Credentials (Auto-Filled)</p>
+                    <p class="demo-text">Email: vaishnavi.gupta@gov.in</p>
+                    <p class="demo-text">Password: karmayogi2024</p>
+                    <button type="button" class="btn-demo-fill" onclick="autoFillLogin()">
+                        <i class="fas fa-magic"></i> Auto Fill
+                    </button>
+                </div>
+                <button class="btn-back" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div id="dashboard-page" class="page-hidden">
+        <!-- Dashboard Navbar -->
+        <nav class="dashboard-nav">
+            <div class="dashboard-nav-content">
+                <h1 class="dashboard-title">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </h1>
+                <div class="dashboard-user">
+                    <span class="welcome-text">Welcome, <strong id="userName"></strong></span>
+                    
+                    <!-- Notification Bell Icon -->
+                    <div class="notification-bell-container" style="position:relative;margin-right:16px;">
+                        <button id="notificationBell" class="notification-bell" style="background:none;border:none;color:#64748b;font-size:1.4em;cursor:pointer;padding:8px;border-radius:50%;transition:all 0.2s;position:relative;">
+                            <i class="fas fa-bell"></i>
+                            <span id="notificationBadge" class="notification-badge" style="position:absolute;top:2px;right:2px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:0.7em;display:flex;align-items:center;justify-content:center;font-weight:700;">0</span>
+                        </button>
+                        
+                        <!-- Notification Dropdown -->
+                        <div id="notificationDropdown" class="notification-dropdown" style="position:absolute;top:100%;right:0;width:380px;max-height:400px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);border:1px solid #e2e8f0;z-index:1000;display:none;overflow:hidden;">
+                            <div class="notification-header" style="background:#f8fafc;padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:between;align-items:center;">
+                                <h3 style="margin:0;font-size:1.1em;color:#1e293b;font-weight:700;">
+                                    <i class="fas fa-bell"></i> Live Notifications
+                                </h3>
+                                <div style="display:flex;gap:8px;">
+                                    <button id="clearNotificationsMini" class="btn-mini" style="background:#ef4444;color:#fff;border:none;padding:4px 8px;border-radius:4px;font-size:0.8em;cursor:pointer;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button id="pauseNotificationsMini" class="btn-mini" style="background:#64748b;color:#fff;border:none;padding:4px 8px;border-radius:4px;font-size:0.8em;cursor:pointer;">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="notificationList" class="notification-list" style="max-height:300px;overflow-y:auto;padding:8px;"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-content">
+            <section class="dashboard-widgets">
+            <!-- Profile Card -->
+            <div class="profile-card animate-fade-in">
+                <div class="profile-avatar" style="position:relative;">
+                    <img src="media/Vaishnavi .jpg" alt="Vaishnavi Gupta" style="object-fit:cover;width:100px;height:100px;border-radius:50%;border:3px solid #38bdf8;box-shadow:0 2px 8px #0002;" />
+                </div>
+                <div class="profile-info">
+                    <h2 id="profileName">Vaishnavi Gupta</h2>
+                    <div style="font-size:1.05em;color:#38bdf8;font-weight:600;margin-bottom:2px;"></div>
+                    <p class="profile-role">Section Officer, Ministry of Electronics and IT</p>
+                    <div class="profile-performance">
+                        <span class="profile-pvs">
+                            PVS: <b id="profilePvs">87</b>
+                            <button class="info-btn" tabindex="0" aria-label="Measuring What Matters: The Public Value Score" data-tooltip="pvs-tip">i</button>
+                        </span>
+                        <span class="profile-ckp">
+                            CKP: <b id="profileCkp">1245</b>
+                            <button class="info-btn" tabindex="0" aria-label="Rewarding Excellence: The Civic Karma Engine" data-tooltip="ckp-tip">i</button>
+                        </span>
+                        <span class="info-tooltip" id="pvs-tip">Public Value Score (PVS) measures your impact and efficiency in achieving objectives</span>
+                        <span class="info-tooltip" id="ckp-tip">Competency Karma Points (CKP) reward your quality work and collaboration</span>
+                    </div>
+                </div>
+            </div>
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card purple animate-fade-in">
+                    <div class="kpi-header">
+                        <div class="kpi-info">
+                            <p class="kpi-label">PVS Score</p>
+                            <h3 class="kpi-value" id="pvsScore">87</h3>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <p class="kpi-trend positive">
+                        <i class="fas fa-arrow-up"></i> 12% from last month
+                    </p>
+                </div>
+
+                <div class="kpi-card blue animate-fade-in" style="animation-delay: 0.1s">
+                    <div class="kpi-header">
+                        <div class="kpi-info">
+                            <p class="kpi-label">CKP Points</p>
+                            <h3 class="kpi-value" id="ckpPoints">1,245</h3>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    <p class="kpi-trend positive">
+                        <i class="fas fa-arrow-up"></i> 8% from last month
+                    </p>
+                </div>
+
+                <div class="kpi-card green animate-fade-in" style="animation-delay: 0.2s">
+                    <div class="kpi-header">
+                        <div class="kpi-info">
+                            <p class="kpi-label">Objectives</p>
+                            <h3 class="kpi-value" id="objectives">6/8</h3>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                    <p class="kpi-trend positive">75% completion rate</p>
+                </div>
+
+                <div class="kpi-card orange animate-fade-in" style="animation-delay: 0.3s">
+                    <div class="kpi-header">
+                        <div class="kpi-info">
+                            <p class="kpi-label">High Priority</p>
+                            <h3 class="kpi-value" id="highPriority">3</h3>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                    </div>
+                    <p class="kpi-trend negative">Requires attention</p>
+                </div>
+            </div>
+
+
+            <!-- Impact Tracker Widget - UNIQUE FEATURE -->
+            <div class="chart-card animate-fade-in impact-tracker">
+                <h3 class="chart-title">
+                    <i class="fas fa-heart"></i> Citizen Impact Tracker
+                </h3>
+                <div class="impact-stats-grid">
+                    <div class="impact-stat">
+                        <div class="impact-icon">👥</div>
+                        <div class="impact-number" id="citizensImpacted">2,45,000</div>
+                        <div class="impact-label">Citizens Helped</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-icon">💰</div>
+                        <div class="impact-number" id="moneySaved">₹12.5 Cr</div>
+                        <div class="impact-label">Public Money Saved</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-icon">⚡</div>
+                        <div class="impact-number" id="timeReduced">45 Days</div>
+                        <div class="impact-label">Process Time Reduced</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-icon">🌱</div>
+                        <div class="impact-number" id="sustainabilityScore">92%</div>
+                        <div class="impact-label">Sustainability Impact</div>
+                    </div>
+                </div>
+                <div class="impact-message">
+                    <p><strong>Your work is making a real difference!</strong> Each completed task creates tangible benefits for citizens.</p>
+                </div>
+                <!-- Personalized Comparison Row -->
+                <div class="impact-comparison-row">
+                    <div class="comparison-title"><i class="fas fa-user-check"></i> Your Impact vs Team Average</div>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <span class="comparison-label">Citizens Helped</span>
+                            <span class="comparison-value user">2,45,000</span>
+                            <span class="comparison-value team">Team Avg: 1,80,000</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-label">Money Saved</span>
+                            <span class="comparison-value user">₹12.5 Cr</span>
+                            <span class="comparison-value team">Team Avg: ₹8.2 Cr</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-label">Time Reduced</span>
+                            <span class="comparison-value user">45 Days</span>
+                            <span class="comparison-value team">Team Avg: 28 Days</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-label">Sustainability</span>
+                            <span class="comparison-value user">92%</span>
+                            <span class="comparison-value team">Team Avg: 78%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Suggestions Card -->
+            <a href="ai-suggestion.html" style="text-decoration:none;display:block;">
+            <div class="chart-card animate-fade-in ai-suggestion-card">
+                <h3 class="chart-title"><i class="fas fa-robot"></i> AI Suggestion</h3>
+                <div class="ai-suggestion-message" id="aiSuggestionMessage">
+                    <span class="ai-suggestion-icon">💡</span>
+                    <span id="aiSuggestionText">Prioritize your high-impact objectives for a bigger citizen benefit! Completing 'Digital Service Standard' will help 10,000+ more citizens this month.</span>
+                </div>
+            </div>
+            </a>
+
+            <!-- Team Room Collaboration Section -->
+            <a href="team.html" style="text-decoration:none;display:block;">
+            <div class="chart-card animate-fade-in team-room-card">
+                <h3 class="chart-title"><i class="fas fa-users"></i> Team Room</h3>
+                <div class="team-room-grid">
+                    <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #22c55e;gap:8px;">
+                        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#fbbf24;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <img src="media/anurag maurya.jpg" alt="Anurag Maurya" style="width:100%;height:100%;object-fit:cover;" />
+                        </div>
+                        <div class="team-name" style="font-weight:700;font-size:1.08em;">Anurag Maurya</div>
+                        <div class="team-role" style="font-size:0.98em;color:#16a34a;">Team Lead, Visionary & Web Developer</div>
+                        <div class="team-progress" style="font-size:0.97em;color:#64748b;">Objectives: <span class="team-obj">7/8</span></div>
+                        <button class="team-encourage">👏 Encourage</button>
+                    </div>
+                    <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #38bdf8;gap:8px;">
+                        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#38bdf8;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <img src="media/Vaishnavi .jpg" alt="Vaishnavi Gupta" style="width:100%;height:100%;object-fit:cover;" />
+                        </div>
+                        <div class="team-name" style="font-weight:700;font-size:1.08em;">Vaishnavi Gupta</div>
+                        <div class="team-role" style="font-size:0.98em;color:#38bdf8;">UI/UX & Presentation Designer</div>
+                        <div class="team-progress" style="font-size:0.97em;color:#64748b;">Objectives: <span class="team-obj">6/8</span></div>
+                        <button class="team-encourage">👏 Encourage</button>
+                    </div>
+                    <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #22c55e;gap:8px;">
+                        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#22c55e;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <img src="media/mayank.jpg" alt="Mayank Kumar" style="width:100%;height:100%;object-fit:cover;" />
+                        </div>
+                        <div class="team-name" style="font-weight:700;font-size:1.08em;">Mayank Kumar</div>
+                        <div class="team-role" style="font-size:0.98em;color:#22c55e;">Core Web Developer</div>
+                        <div class="team-progress" style="font-size:0.97em;color:#64748b;">Objectives: <span class="team-obj">5/8</span></div>
+                        <button class="team-encourage">👏 Encourage</button>
+                    </div>
+                    <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #a78bfa;gap:8px;">
+                        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#a78bfa;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <img src="media/Sia.jpg" alt="Sia" style="width:100%;height:100%;object-fit:cover;" />
+                        </div>
+                        <div class="team-name" style="font-weight:700;font-size:1.08em;">Sia</div>
+                        <div class="team-role" style="font-size:0.98em;color:#a78bfa;">Presentation Specialist</div>
+                        <div class="team-progress" style="font-size:0.97em;color:#64748b;">Objectives: <span class="team-obj">4/8</span></div>
+                        <button class="team-encourage">👏 Encourage</button>
+                    </div>
+                    <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #f472b6;gap:8px;">
+                        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#f472b6;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <img src="media/smarath.jpg" alt="Smarth" style="width:100%;height:100%;object-fit:cover;" />
+                        </div>
+                        <div class="team-name" style="font-weight:700;font-size:1.08em;">Smarth</div>
+                        <div class="team-role" style="font-size:0.98em;color:#f472b6;">Quality Assurance (QA) Analyst</div>
+                        <div class="team-progress" style="font-size:0.97em;color:#64748b;">Objectives: <span class="team-obj">3/8</span></div>
+                        <button class="team-encourage">👏 Encourage</button>
+                    </div>
+                    <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #ff9800;gap:8px;">
+                        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#ff9800;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <img src="media/shaina2.jpg" alt="Shaina" style="width:100%;height:100%;object-fit:cover;" />
+                        </div>
+                        <div class="team-name" style="font-weight:700;font-size:1.08em;">Shaina</div>
+                        <div class="team-role" style="font-size:0.98em;color:#ff9800;">Lead Presenter</div>
+                        <div class="team-progress" style="font-size:0.97em;color:#64748b;">Objectives: <span class="team-obj">2/8</span></div>
+                        <button class="team-encourage">👏 Encourage</button>
+                    </div>
+                </div>
+            </div>
+            </a>
+
+            <!-- Gamification: Badges, Streaks, Leaderboard -->
+            <a href="gamification.html"><div class="chart-card animate-fade-in gamification-card">
+                <h3 class="chart-title"><i class="fas fa-trophy"></i> Gamification</h3>
+                <div class="gamification-row">
+                    <div class="badge-card">
+                        <div class="badge-icon" style="background:#38bdf8;">🏅</div>
+                        <div class="badge-label">Impact Hero</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon" style="background:#fbbf24;">🔥</div>
+                        <div class="badge-label">7-Day Streak</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon" style="background:#22c55e;">🌟</div>
+                        <div class="badge-label">Top Performer</div>
+                    </div>
+                </div>
+                <div class="leaderboard-section">
+                    <div class="leaderboard-title"><i class="fas fa-list-ol"></i> Leaderboard</div>
+                    <ol class="leaderboard-list">
+                        <li><span class="leaderboard-rank">1</span> Anurag Maurya <span class="leaderboard-score">8,900 pts</span></li>
+                        <li><span class="leaderboard-rank">2</span> Vaishnavi Gupta <span class="leaderboard-score">8,200 pts</span></li>
+                        <li><span class="leaderboard-rank">3</span> Mayank Kumar <span class="leaderboard-score">7,950 pts</span></li>
+                    </ol>
+                </div>
+            </div>
+            </section>
+        </a>
+
+            <!-- Dashboard Summary Widget -->
+            <div class="chart-card animate-fade-in dashboard-summary">
+                <h3 class="chart-title">
+                    <i class="fas fa-tachometer-alt"></i> Performance Overview
+                </h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-value" id="totalWorkCompleted">75%</div>
+                        <div class="summary-label">Total Work Completed</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="avgPerformance">87</div>
+                        <div class="summary-label">PVS Score</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="recentTrend">↗️</div>
+                        <div class="summary-label">Performance Trend</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="nextDeadline">3 days</div>
+                        <div class="summary-label">Next Deadline</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Work Completion Status -->
+            <div class="chart-card animate-fade-in">
+                <h3 class="chart-title">
+                    <i class="fas fa-tasks"></i> Work Completion Overview
+                </h3>
+                <div id="workCompletionDisplay"></div>
+            </div>
+
+            <!-- Mission Map Visualization -->
+            <div class="chart-card animate-fade-in" id="missionMapCard">
+                <h3 class="chart-title"><i class="fas fa-map"></i> Mission Map Visualization</h3>
+                <div id="missionMapBar" style="margin:24px 0 8px 0; width:100%; height:32px; background:#e0e7ef; border-radius:18px; overflow:hidden; position:relative;">
+                    <div id="missionMapProgress" style="height:100%; background:linear-gradient(90deg,#38bdf8,#22c55e); width:0%; border-radius:18px; transition:width 0.7s;"></div>
+                    <span id="missionMapLabel" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-weight:700;color:#1e293b;font-size:1.1em;">0% Complete</span>
+                </div>
+                <ul id="missionMapObjectives" style="margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px 24px;"></ul>
+            </div>
+
+
+
+            <!-- Advanced Dashboard Features -->
+            <div class="dashboard-section">
+                <h2 class="section-heading">🚀 Advanced Features</h2>
+                <div class="advanced-features-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:32px;">
+                    
+                    <!-- Voice Assistant -->
+                    <div class="chart-card animate-fade-in" style="background:#f0f9ff;border:2px solid #0ea5e9;">
+                        <h3 class="chart-title" style="color:#0ea5e9;"><i class="fas fa-microphone"></i> Voice Assistant</h3>
+                        <p style="color:#64748b;margin-bottom:16px;">Talk to Yogi Bot using voice commands</p>
+                        <button id="voiceButton" class="btn" style="background:#0ea5e9;color:#fff;padding:10px 18px;border-radius:8px;font-size:1em;width:100%;">
+                            <i class="fas fa-microphone"></i> Start Voice Chat
+                        </button>
+                        <div id="voiceStatus" style="margin-top:12px;font-size:0.9em;color:#64748b;text-align:center;"></div>
+                    </div>
+
+                    <!-- Data Export -->
+                    <div class="chart-card animate-fade-in" style="background:#f0fdf4;border:2px solid #22c55e;">
+                        <h3 class="chart-title" style="color:#22c55e;"><i class="fas fa-download"></i> Data Export</h3>
+                        <p style="color:#64748b;margin-bottom:16px;">Export your performance data</p>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+                            <button id="exportPDF" class="btn" style="background:#22c55e;color:#fff;padding:8px 14px;border-radius:6px;font-size:0.9em;">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <button id="exportCSV" class="btn" style="background:#22c55e;color:#fff;padding:8px 14px;border-radius:6px;font-size:0.9em;">
+                                <i class="fas fa-file-csv"></i> CSV
+                            </button>
+                            <button id="exportJSON" class="btn" style="background:#22c55e;color:#fff;padding:8px 14px;border-radius:6px;font-size:0.9em;">
+                                <i class="fas fa-file-code"></i> JSON
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Smart Reminders -->
+                    <div class="chart-card animate-fade-in" style="background:#fffbeb;border:2px solid #f59e0b;">
+                        <h3 class="chart-title" style="color:#f59e0b;"><i class="fas fa-bell"></i> Smart Reminders</h3>
+                        <p style="color:#64748b;margin-bottom:16px;">AI-powered deadline notifications</p>
+                        <button id="reminderToggle" class="btn" style="background:#f59e0b;color:#fff;padding:10px 18px;border-radius:8px;font-size:1em;width:100%;">
+                            <i class="fas fa-bell"></i> Enable Reminders
+                        </button>
+                        <div id="reminderCount" style="margin-top:12px;font-size:0.9em;color:#64748b;text-align:center;">📅 2 upcoming deadlines</div>
+                    </div>
+
+                    <!-- Performance Prediction -->
+                    <div class="chart-card animate-fade-in" style="background:#fef7ff;border:2px solid #a855f7;">
+                        <h3 class="chart-title" style="color:#a855f7;"><i class="fas fa-chart-line"></i> AI Prediction</h3>
+                        <p style="color:#64748b;margin-bottom:16px;">Predict future performance trends</p>
+                        <button id="predictionButton" class="btn" style="background:#a855f7;color:#fff;padding:10px 18px;border-radius:8px;font-size:1em;width:100%;">
+                            <i class="fas fa-crystal-ball"></i> View Prediction
+                        </button>
+                        <div id="predictionResult" style="margin-top:12px;font-size:0.9em;color:#64748b;text-align:center;">🎯 Expected PVS: 92 next month</div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <!-- Judge Demo Mode Toggle -->
+            <div class="chart-card animate-fade-in" id="judgeDemoCard" style="background:linear-gradient(135deg,#fffbe7 0%,#fbbf24 100%);border:2px solid #fbbf24;">
+                <h3 class="chart-title"><i class="fas fa-gavel"></i> Judge Demo Mode</h3>
+                <button id="judgeDemoToggle" class="btn" style="background:#fbbf24;color:#fff;font-weight:700;">Enable Judge Demo Mode</button>
+                <div id="judgeDemoBanner" style="display:none;margin-top:14px;padding:10px 18px;background:#fbbf24;color:#fff;border-radius:8px;font-weight:700;">Judge Demo Mode Active: All features and demo data are unlocked!</div>
+            </div>
+
+            <!-- Key Performance Charts -->
+            <div class="dashboard-section">
+                <h2 class="section-heading">📊 Performance Analytics</h2>
+                <div class="charts-grid">
+                    <div class="chart-card animate-fade-in">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-line"></i> Performance Trend
+                        </h3>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="chart-card animate-fade-in">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-bar"></i> Monthly Progress
+                        </h3>
+                        <canvas id="monthlyProgressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Analysis Charts -->
+            <div class="dashboard-section">
+                <h2 class="section-heading">🎯 Work Analysis</h2>
+                <div class="charts-grid">
+                    <div class="chart-card animate-fade-in">
+                        <h3 class="chart-title">
+                            <i class="fas fa-tasks"></i> Work Completion
+                        </h3>
+                        <canvas id="workCompletionChart"></canvas>
+                    </div>
+                    <div class="chart-card animate-fade-in">
+                        <h3 class="chart-title">
+                            <i class="fas fa-chart-pie"></i> Performance Distribution
+                        </h3>
+                        <canvas id="performancePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Stories Section - UNIQUE FEATURE -->
+            <div class="dashboard-section">
+                <h2 class="section-heading">💫 Real Impact Stories</h2>
+                <div class="impact-stories-grid">
+                    <div class="impact-story animate-fade-in">
+                        <div class="story-icon">🏥</div>
+                        <h4>Digital Health Records</h4>
+                        <p class="story-benefit">Your API Governance Framework improved hospital data access, reducing patient wait time by <strong>30 minutes</strong> per visit.</p>
+                        <div class="story-metrics">
+                            <span class="metric">50,000+ patients benefited</span>
+                            <span class="metric">₹2.5 Cr saved annually</span>
+                        </div>
+                    </div>
+                    <div class="impact-story animate-fade-in">
+                        <div class="story-icon">🎓</div>
+                        <h4>Digital Literacy Program</h4>
+                        <p class="story-benefit">Your training modules helped <strong>15,000 students</strong> in rural areas access online education during pandemic.</p>
+                        <div class="story-metrics">
+                            <span class="metric">15,000+ students helped</span>
+                            <span class="metric">95% completion rate</span>
+                        </div>
+                    </div>
+                    <div class="impact-story animate-fade-in">
+                        <div class="story-icon">🏢</div>
+                        <h4>Citizen Feedback System</h4>
+                        <p class="story-benefit">Your system reduced complaint resolution time from <strong>30 days to 7 days</strong>, improving citizen satisfaction.</p>
+                        <div class="story-metrics">
+                            <span class="metric">85% faster resolution</span>
+                            <span class="metric">4.8/5 satisfaction score</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objectives List with Impact -->
+            <div class="objectives-card animate-fade-in">
+                <h2 class="card-title">
+                    <i class="fas fa-list-check"></i> My Objectives & Impact
+                </h2>
+                <div id="objectivesList"></div>
+            </div>
+
+            <!-- Advanced Performance Charts -->
+            <div class="charts-grid">
+                <div class="chart-card animate-fade-in">
+                    <h3 class="chart-title">
+                        <i class="fas fa-users"></i> Team Performance Comparison
+                    </h3>
+                    <canvas id="teamChart"></canvas>
+                </div>
+                <div class="chart-card animate-fade-in">
+                    <h3 class="chart-title">
+                        <i class="fas fa-radar-chart"></i> Department Comparison
+                    </h3>
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </div>
+
+            <!-- AI Assistant Section -->
+            <div class="assistant-section">
+                <div class="chatbot-fab-container">
+                    <!-- Floating Action Button for Chatbot -->
+                    <button id="chatbot-fab" class="chatbot-fab" aria-label="Open Chatbot" style="display: flex;">
+                        <i class="fas fa-robot"></i>
+                    </button>
+                    <!-- Expandable Chatbot Widget (hidden by default) -->
+                    <div id="chatbot-widget" class="chatbot-widget animate-fade-in" style="display: none;">
+                        <div class="chatbot-header">
+                            <span class="chatbot-title">
+                                <i class="fas fa-robot"></i> Yogi Bot
+                                <span class="chatbot-status">Online</span>
+                            </span>
+                            <button class="close-btn" title="Close Chatbot" aria-label="Close Chatbot">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chatbot-body" id="chatbotBody">
+                            <div class="chatbot-message bot">
+                                Namaste! 🙏 I'm Yogi Bot, your dedicated AI assistant for the Karmayogi platform. I'm here to help you with:
+                                <ul>
+                                    <li>Task management and deadlines</li>
+                                    <li>Performance insights and tips</li>
+                                    <li>Work-related queries</li>
+                                    <li>Motivation and guidance</li>
+                                </ul>
+                                How can I assist you today?
+                            </div>
+                        </div>
+                        <div class="chatbot-footer">
+                            <input type="text" id="chatbotInput" placeholder="Ask Yogi Bot anything..." autocomplete="off" />
+                            <button id="chatbotSend" title="Send Message">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="chatbot-typing" style="display: none;">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Celebration Overlay (hidden by default) -->
+            <div id="celebrationOverlay" class="celebration-overlay" style="display:none;">
+                <div class="celebration-content">
+                    <div class="celebration-confetti"></div>
+                    <h2>Congratulations!</h2>
+                    <p id="celebrationMsg">Objective completed! Here are your benefits:</p>
+                    <ul id="celebrationBenefits" style="text-align:left; margin: 0 auto 18px auto; max-width: 320px;"></ul>
+                    <button id="celebrationCloseBtn" style="margin-top:12px; padding:10px 28px; border-radius:18px; background:#38bdf8; color:#fff; border:none; font-weight:700; font-size:1.1rem; cursor:pointer;">Close</button>
+                <script>
+                // Fix celebration overlay close and confetti cleanup
+                document.addEventListener('DOMContentLoaded', function() {
+                    var closeBtn = document.getElementById('celebrationCloseBtn');
+                    var overlay = document.getElementById('celebrationOverlay');
+                    if (closeBtn && overlay) {
+                        closeBtn.onclick = function() {
+                            overlay.style.animation = 'fadeOutCelebration 0.5s forwards';
+                            setTimeout(function() {
+                                overlay.style.display = 'none';
+                                overlay.style.animation = '';
+                                var confetti = overlay.querySelector('.celebration-confetti');
+                                if (confetti) confetti.innerHTML = '';
+                            }, 500);
+                        };
+                    }
+                });
+                </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="data.js"></script>
+        <script src="performance.js"></script>
+        <script>
+        // Show fallback if model-viewer not supported or model fails to load
+        document.addEventListener('DOMContentLoaded', function() {
+            var mv = document.getElementById('hero-3d-worker');
+            var fallback = document.getElementById('hero-3d-worker-fallback');
+            if (!window.customElements || !window.customElements.get('model-viewer')) {
+                if (mv) mv.style.display = 'none';
+                if (fallback) fallback.style.display = 'flex';
+            } else if (mv) {
+                mv.addEventListener('error', function() {
+                    mv.style.display = 'none';
+                    if (fallback) fallback.style.display = 'flex';
+                });
+                mv.addEventListener('model-visibility', function(e) {
+                    if (!e.detail.visible) {
+                        mv.style.display = 'none';
+                        if (fallback) fallback.style.display = 'flex';
+                    }
+                });
+            }
+        });
+        </script>
+                <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
+                <script>
+                // 3D Animated Background using three.js
+                window.addEventListener('DOMContentLoaded', function() {
+                    const canvas = document.getElementById('bg-3d-canvas');
+                    if (!canvas) return;
+                    canvas.style.position = 'fixed';
+                    canvas.style.top = '0';
+                    canvas.style.left = '0';
+                    canvas.style.width = '100vw';
+                    canvas.style.height = '100vh';
+                    canvas.style.zIndex = '-3';
+                    canvas.style.pointerEvents = 'none';
+                    // Setup three.js scene
+                    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+                    renderer.setClearColor(0x000000, 0); // transparent
+                    function resize() {
+                        renderer.setSize(window.innerWidth, window.innerHeight, false);
+                        camera.aspect = window.innerWidth / window.innerHeight;
+                        camera.updateProjectionMatrix();
+                    }
+                    window.addEventListener('resize', resize);
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+                    camera.position.z = 16;
+                    // Add lights
+                    const light1 = new THREE.PointLight(0xff9800, 1.2, 100);
+                    light1.position.set(10, 10, 20);
+                    scene.add(light1);
+                    const light2 = new THREE.PointLight(0x00eaff, 0.7, 100);
+                    light2.position.set(-10, -10, 20);
+                    scene.add(light2);
+                    // Add floating 3D shapes
+                    const shapes = [];
+                    const geometryTypes = [
+                        // Office-related 3D shapes: laptop, mug, file, pen, book, desk, chair
+                        (() => { // Laptop: base + tilted screen
+                            const group = new THREE.Group();
+                            const base = new THREE.BoxGeometry(1.7, 0.18, 1.1);
+                            const screen = new THREE.BoxGeometry(1.7, 1, 0.09);
+                            const baseMesh = new THREE.Mesh(base, new THREE.MeshPhysicalMaterial({ color: 0x8fd3f4, metalness: 0.5, roughness: 0.3 }));
+                            const screenMesh = new THREE.Mesh(screen, new THREE.MeshPhysicalMaterial({ color: 0x4a90e2, metalness: 0.2, roughness: 0.4 }));
+                            screenMesh.position.set(0, 0.55, -0.5);
+                            screenMesh.rotation.x = -Math.PI / 7;
+                            group.add(baseMesh);
+                            group.add(screenMesh);
+                            return group;
+                        })(),
+                        (() => { // Coffee mug
+                            const group = new THREE.Group();
+                            const mug = new THREE.CylinderGeometry(0.38, 0.38, 0.8, 32);
+                            const mugMesh = new THREE.Mesh(mug, new THREE.MeshPhysicalMaterial({ color: 0xf5a623, metalness: 0.1, roughness: 0.5 }));
+                            group.add(mugMesh);
+                            const handle = new THREE.TorusGeometry(0.19, 0.07, 16, 32, Math.PI);
+                            const handleMesh = new THREE.Mesh(handle, new THREE.MeshPhysicalMaterial({ color: 0xf8e71c, metalness: 0.1, roughness: 0.5 }));
+                            handleMesh.position.set(0.42, 0, 0);
+                            handleMesh.rotation.z = Math.PI / 2;
+                            group.add(handleMesh);
+                            return group;
+                        })(),
+                        new THREE.BoxGeometry(1.2, 0.13, 1.6), // File
+                        new THREE.CylinderGeometry(0.08, 0.08, 1.4, 16), // Pen
+                        new THREE.BoxGeometry(1.1, 0.2, 1.4), // Book
+                        new THREE.BoxGeometry(2.3, 0.2, 1.3), // Desk
+                        (() => { // Chair
+                            const group = new THREE.Group();
+                            const seat = new THREE.BoxGeometry(0.8, 0.16, 0.8);
+                            const back = new THREE.BoxGeometry(0.8, 0.55, 0.12);
+                            const seatMesh = new THREE.Mesh(seat, new THREE.MeshPhysicalMaterial({ color: 0x7ed957, metalness: 0.2, roughness: 0.5 }));
+                            const backMesh = new THREE.Mesh(back, new THREE.MeshPhysicalMaterial({ color: 0x6ec1e4, metalness: 0.2, roughness: 0.5 }));
+                            backMesh.position.set(0, 0.21, -0.34);
+                            group.add(seatMesh);
+                            group.add(backMesh);
+                            return group;
+                        })()
+                    ];
+                    const colors = [0xff9800, 0xb388ff, 0x00eaff, 0xfbbf24, 0xa78bfa, 0xf472b6];
+                                for (let i = 0; i < 22; i++) {
+                                    let mesh;
+                                    const geo = geometryTypes[i % geometryTypes.length];
+                                    if (geo.type === 'Group') {
+                                        mesh = geo.clone();
+                                        mesh.traverse(child => {
+                                            if (child.isMesh) {
+                                                child.castShadow = false;
+                                                child.receiveShadow = false;
+                                                child.material.transparent = true;
+                                                child.material.opacity = 0.7;
+                                            }
+                                        });
+                                    } else {
+                                        mesh = new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({
+                                            color: colors[i % colors.length],
+                                            metalness: 0.2,
+                                            roughness: 0.5,
+                                            clearcoat: 0.7,
+                                            transparent: true,
+                                            opacity: 0.7,
+                                            transmission: 0.5
+                                        }));
+                                    }
+                                    // Randomize initial position in a large sphere
+                                    const phi = Math.acos(2 * Math.random() - 1);
+                                    const theta = 2 * Math.PI * Math.random();
+                                    const r = 10 + Math.random() * 7;
+                                    mesh.position.x = r * Math.sin(phi) * Math.cos(theta);
+                                    mesh.position.y = r * Math.sin(phi) * Math.sin(theta);
+                                    mesh.position.z = r * Math.cos(phi);
+                                    mesh.userData = {
+                                        base: mesh.position.clone(),
+                                        speed: 0.7 + Math.random() * 0.7,
+                                        offset: Math.random() * Math.PI * 2
+                                    };
+                                    mesh.rotation.x = Math.random() * Math.PI;
+                                    mesh.rotation.y = Math.random() * Math.PI;
+                                    scene.add(mesh);
+                                    shapes.push(mesh);
+                                }
+                                // Animate: float in all directions
+                                function animate() {
+                                    requestAnimationFrame(animate);
+                                    const t = Date.now() * 0.00035;
+                                    shapes.forEach((mesh, i) => {
+                                        mesh.rotation.x += 0.003 + i * 0.0007;
+                                        mesh.rotation.y += 0.004 + i * 0.0005;
+                                        // Orbit and float in all directions
+                                        const s = mesh.userData.speed;
+                                        const o = mesh.userData.offset;
+                                        mesh.position.x = mesh.userData.base.x + Math.sin(t * s + o) * 2.5 + Math.cos(t * 0.7 + o) * 1.2;
+                                        mesh.position.y = mesh.userData.base.y + Math.cos(t * s * 1.2 + o) * 2.5 + Math.sin(t * 0.5 + o) * 1.2;
+                                        mesh.position.z = mesh.userData.base.z + Math.sin(t * s * 0.8 + o) * 2.2;
+                                    });
+                                    renderer.render(scene, camera);
+                                }
+                                resize();
+                                animate();
+                });
+                </script>
+                <script src="script.js"></script>
+        <script src="celebration.js"></script>
+        <script src="config.js"></script>
+        <script src="bot-features.js"></script>
+        <script src="yogi-bot.js"></script>
+        <!-- Ensured model-viewer loads before script.js and added browser support check -->
+        <script>
+// Force dark mode by default unless user has set a theme
+(function() {
+  if (!localStorage.getItem('theme')) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+</body>
+</html>

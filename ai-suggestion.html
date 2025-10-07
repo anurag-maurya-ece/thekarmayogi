@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Suggestions - Karmayogi Path</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="dashboard-nav">
+        <div class="dashboard-nav-content">
+            <h1 class="dashboard-title"><i class="fas fa-robot"></i> AI Suggestions</h1>
+            <button class="btn-back" id="backToPreviousBtn" style="text-decoration:none;"><i class="fas fa-arrow-left"></i> Back to Previous Page</button>
+            <nav style="margin-left:auto;display:flex;gap:12px;">
+                <a href="team.html" class="btn-primary" style="text-decoration:none;">Team Room</a>
+                <a href="gamification.html" class="btn-primary" style="text-decoration:none;">Gamification</a>
+            </nav>
+        </div>
+    </nav>
+    <main class="dashboard-content">
+        <section class="ai-suggestion-card visible" style="margin-bottom:32px;">
+            <h2 style="text-align:center;">Personalized AI Suggestions</h2>
+            <p style="text-align:center;color:#555;font-size:1.08em;margin-bottom:18px;">Get actionable insights and tips powered by AI to boost your performance and achieve your goals faster.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-bottom:24px;">
+                <div class="badge-card">
+                    <div class="badge-icon" style="background:#38bdf8;">💡</div>
+                    <div class="badge-label">Prioritize high-impact objectives for bigger citizen benefit!</div>
+                </div>
+                <div class="badge-card">
+                    <div class="badge-icon" style="background:#fbbf24;">🤖</div>
+                    <div class="badge-label">AI: Completing 'Digital Service Standard' will help 10,000+ more citizens this month.</div>
+                </div>
+                <div class="badge-card">
+                    <div class="badge-icon" style="background:#22c55e;">📈</div>
+                    <div class="badge-label">Focus on objectives with the highest PVS for maximum impact.</div>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:center;margin-top:32px;gap:18px;">
+                <a href="team.html" class="btn-primary" style="text-decoration:none;">Team Room</a>
+                <a href="gamification.html" class="btn-primary" style="text-decoration:none;">Gamification</a>
+            </div>
+        </section>
+    </main>
+<script>
+// Back to Previous Page button returns to the previous page
+document.getElementById('backToPreviousBtn').onclick = function() {
+    window.history.back();
+};
+</script>
+</body>
+</html>
