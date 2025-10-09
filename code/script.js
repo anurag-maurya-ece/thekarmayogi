@@ -690,7 +690,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initMobileMenu();
     initSmoothScroll();
-    showCurtainLoader();
     initCursorFollower();
     setTimeout(() => {
         showNotification('Welcome to Karmayogi', 'success');
@@ -825,32 +824,32 @@ function updateChartsForTheme() {
 }
 
 // ========== CURTAIN LOADER ========== 
-function showCurtainLoader() {
-    const curtain = document.getElementById('curtain-loader');
-    if (!curtain) return;
-    // 1. Sun appears instantly as soon as page loads
-    setTimeout(() => {
-        const sun = document.querySelector('.curtain-center-logo');
-        if (sun) {
-            sun.style.opacity = '1';
-            sun.style.transition = 'opacity 0.18s cubic-bezier(.77,0,.18,1)';
-        }
-        // 2. Curtain opens almost immediately after sun appears
-        setTimeout(() => {
-            curtain.classList.add('open');
-            // 3. Instantly hide both sun and curtain as soon as curtain is fully open
-            setTimeout(() => {
-                if (sun) sun.style.opacity = '0';
-                curtain.classList.add('hide');
-            }, 350); // much faster, matches curtain open visually
-        }, 80); // sun appears 0.08s before curtain opens
-    }, 400); // start after 0.4s (almost instant)
-    // Hide fallback loader as well
-    setTimeout(() => {
-        const loader = document.getElementById('loader');
-        if (loader) loader.style.display = 'none';
-    }, 4000);
-}
+// function showCurtainLoader() {
+//     const curtain = document.getElementById('curtain-loader');
+//     if (!curtain) return;
+//     // 1. Sun appears instantly as soon as page loads
+//     setTimeout(() => {
+//         const sun = document.querySelector('.curtain-center-logo');
+//         if (sun) {
+//             sun.style.opacity = '1';
+//             sun.style.transition = 'opacity 0.18s cubic-bezier(.77,0,.18,1)';
+//         }
+//         // 2. Curtain opens almost immediately after sun appears
+//         setTimeout(() => {
+//             curtain.classList.add('open');
+//             // 3. Instantly hide both sun and curtain as soon as curtain is fully open
+//             setTimeout(() => {
+//                 if (sun) sun.style.opacity = '0';
+//                 curtain.classList.add('hide');
+//             }, 350); // much faster, matches curtain open visually
+//         }, 80); // sun appears 0.08s before curtain opens
+//     }, 400); // start after 0.4s (almost instant)
+//     // Hide fallback loader as well
+//     setTimeout(() => {
+//         const loader = document.getElementById('loader');
+//         if (loader) loader.style.display = 'none';
+//     }, 4000);
+// }
 
 // Add animation keyframes for Namaste girl
 const style2 = document.createElement('style');
@@ -1156,10 +1155,8 @@ function showCelebration(objective) {
     ];
     benefits.innerHTML = benefitList.map(b => `<li>✅ ${b}</li>`).join('');
     overlay.style.display = 'flex';
-    // Play celebration sound then trigger staged effects (precise sync)
-    playCelebrationSound(() => {
-        startCelebrationEffects();
-    });
+    // Show simple visual celebration without sound
+    startCelebrationEffects();
 }
 
 // Multi-direction party poppers (DOM based)
@@ -1267,35 +1264,15 @@ function radialBurst() {
     }
 }
 
-// Staged celebration effects for tighter sync with audio peak
+// Simple visual celebration effects without sound
 function startCelebrationEffects(){
-    // Immediate directional poppers & center burst for attack of sound
+    // Launch visual effects immediately
     launchPartyPoppers();
     radialBurst();
-    // Slight delay before confetti rain so layers feel intentional
-    setTimeout(() => { launchConfetti(); }, 140);
+    setTimeout(() => { launchConfetti(); }, 100);
 }
 
-// Celebration sound logic with fallback
-function playCelebrationSound(cb){
-    const sources = [
-        'https://cdn.jsdelivr.net/gh/itsrealfarhan/public-assets/celebration/ta-da.mp3',
-        'https://soundbible.com/mp3/Ta%20Da-SoundBible.com-1884170640.mp3'
-    ];
-    let played = false;
-    function trySrc(i){
-        if(i>=sources.length){ if(cb) cb(); return; }
-        const audio = new Audio(sources[i]);
-        audio.volume = 0.55;
-        const done = () => { if(!played){ played=true; if(cb) cb(); } };
-        // Fire callback very close to perceptual onset
-        audio.addEventListener('play', () => { requestAnimationFrame(() => done()); });
-        audio.addEventListener('error', () => { trySrc(i+1); });
-        const p = audio.play();
-        if(p && p.catch){ p.catch(() => { trySrc(i+1); }); }
-    }
-    trySrc(0);
-}
+// Celebration sound removed - visual only celebration
 
 // Simple confetti animation
 function launchConfetti() {
@@ -2681,4 +2658,51 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         addLiveNotification('🎉 Welcome to your Advanced Dashboard! All systems ready.', 'system');
     }, 1000);
+    
+    // Initialize hero animation with fallback
+    initializeHeroAnimation();
 });
+
+// Hero Animation Handler with Fallback
+function initializeHeroAnimation() {
+    const lottiePlayer = document.getElementById('hero-lottie-animation');
+    const animationContainer = document.querySelector('.hero-animation-container');
+    
+    if (!lottiePlayer || !animationContainer) return;
+    
+    // Set up error handling and fallback
+    let loadTimeout;
+    let hasLoaded = false;
+    
+    // Timeout fallback (if Lottie takes too long)
+    loadTimeout = setTimeout(() => {
+        if (!hasLoaded) {
+            console.warn('Lottie animation load timeout, showing fallback');
+            animationContainer.classList.add('lottie-failed');
+        }
+    }, 5000); // 5 second timeout
+    
+    // Listen for successful load
+    lottiePlayer.addEventListener('ready', () => {
+        hasLoaded = true;
+        if (loadTimeout) clearTimeout(loadTimeout);
+        console.log('Hero Lottie animation loaded successfully');
+    });
+    
+    // Listen for load errors
+    lottiePlayer.addEventListener('error', (e) => {
+        console.warn('Lottie animation failed to load:', e);
+        animationContainer.classList.add('lottie-failed');
+        if (loadTimeout) clearTimeout(loadTimeout);
+    });
+    
+    // Check if the animation is already loaded (for page refreshes)
+    if (lottiePlayer.currentState === 'loading' || lottiePlayer.currentState === 'ready') {
+        setTimeout(() => {
+            if (lottiePlayer.currentState === 'ready') {
+                hasLoaded = true;
+                if (loadTimeout) clearTimeout(loadTimeout);
+            }
+        }, 100);
+    }
+}

@@ -271,7 +271,7 @@ a[href="gamification.html"] {
     z-index: -3;
     pointer-events: none;
 }
-#curtain-loader, .curtain-orange, .curtain-center-logo, .curtain-title, .curtain-sun,
+/* #curtain-loader, .curtain-orange, .curtain-center-logo, .curtain-title, .curtain-sun,
 .floating-card, .chatbot-header, .chatbot-input, .chatbot-message, .btn, .card,
 .section, .contact-form, .chatbot-send-btn, .chatbot-footer, .chatbot-body,
 .chatbot-bubble {
@@ -280,7 +280,7 @@ a[href="gamification.html"] {
                                 box-shadow 0.45s cubic-bezier(.77,0,.18,1),
                                 transform 0.5s cubic-bezier(.77,0,.18,1),
                                 opacity 0.5s cubic-bezier(.77,0,.18,1);
-}
+} */
 
 /* Performance hints */
 .floating-card, .card, .chatbot-bubble, .feature-slide, .about-card { will-change: transform; }
@@ -2381,13 +2381,14 @@ pre, code { white-space: pre-wrap; word-break: break-word; }
 }
 
 .testimonial-card::before {
-    content: '"';
+    content: '';
     position: absolute;
-    top: -10px;
-    left: 20px;
-    font-size: 4rem;
-    color: #22c55e;
-    font-weight: 900;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+    border-radius: 20px 20px 0 0;
 }
 
 .testimonial-quote {
@@ -3728,13 +3729,76 @@ html[data-theme="dark"] .chatbot-fab:hover {
 
 [data-theme="dark"] p,
 [data-theme="dark"] span,
-[data-theme="dark"] div {
-    color: #f3f4f6;
+[data-theme="dark"] div,
+[data-theme="dark"] label,
+[data-theme="dark"] li,
+[data-theme="dark"] td,
+[data-theme="dark"] th {
+    color: #f3f4f6 !important;
 }
 
 [data-theme="dark"] .text-muted,
 [data-theme="dark"] .secondary-text {
     color: #a1a1aa !important;
+}
+
+/* Dark Mode Cards and Containers */
+[data-theme="dark"] .card,
+[data-theme="dark"] .section-box,
+[data-theme="dark"] .kpi-card,
+[data-theme="dark"] .chart-card,
+[data-theme="dark"] .objectives-card,
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .team-card,
+[data-theme="dark"] .dashboard-widget,
+[data-theme="dark"] .notification-dropdown {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Dark Mode Form Elements */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: var(--text-secondary) !important;
+    opacity: 1;
+}
+
+/* Dark Mode Navigation */
+[data-theme="dark"] .nav-link {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+    color: var(--primary) !important;
+}
+
+/* Dark Mode Button Fixes */
+[data-theme="dark"] .btn,
+[data-theme="dark"] button {
+    background: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+}
+
+/* Dark Mode Table Fixes */
+[data-theme="dark"] table,
+[data-theme="dark"] thead,
+[data-theme="dark"] tbody,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th {
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
 }
 
 /* Dark Mode Logo and Branding */
@@ -4017,7 +4081,7 @@ html[data-theme="light"] #dashboard-page {
     color: #fff !important;
 }
 /* === Utility & Animation Styles for Home Page Elements === */
-.curtain {
+/* .curtain {
   position: fixed;
   top: 0;
   width: 50vw;
@@ -4027,7 +4091,7 @@ html[data-theme="light"] #dashboard-page {
   transition: transform 1.2s cubic-bezier(.77,0,.18,1);
 }
 .curtain.left { left: 0; border-top-right-radius: 80px; border-bottom-right-radius: 80px; transform: translateX(0); }
-.curtain.right { right: 0; border-top-left-radius: 80px; border-bottom-left-radius: 80px; transform: translateX(0); }
+.curtain.right { right: 0; border-top-left-radius: 80px; border-bottom-left-radius: 80px; transform: translateX(0); } */
 
 /* Animated SVG background blend for empty spaces */
 .animated-bg-blend {
@@ -4040,6 +4104,46 @@ html[data-theme="light"] #dashboard-page {
     pointer-events: none;
     overflow: hidden;
 }
+/* Hero Animation Styles */
+.hero-animation-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-lottie-wrapper {
+    transition: opacity 0.3s ease;
+}
+
+.hero-lottie-wrapper lottie-player {
+    filter: drop-shadow(0 8px 32px rgba(179, 136, 255, 0.3));
+}
+
+.hero-fallback-animation {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Show fallback if Lottie fails to load */
+.hero-animation-container.lottie-failed .hero-lottie-wrapper {
+    opacity: 0;
+}
+
+.hero-animation-container.lottie-failed .hero-fallback-animation {
+    opacity: 0.8;
+    animation: heroFallbackPulse 2s ease-in-out infinite;
+}
+
+@keyframes heroFallbackPulse {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.4;
+    }
+}
+
 /* About Us 3D model style */
 .about-3d-model model-viewer {
     filter: drop-shadow(0 8px 32px #b388ff44);
@@ -4473,3 +4577,716 @@ html[data-theme="light"] #dashboard-page {
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
     background: #38bdf8;
 }
+
+/* ========== COMPREHENSIVE DARK MODE TEXT VISIBILITY FIXES ========== */
+
+/* Fix all text elements to ensure high contrast */
+[data-theme="dark"] *,
+[data-theme="dark"] *:before,
+[data-theme="dark"] *:after {
+    color: inherit;
+}
+
+/* Base text colors - highest priority */
+[data-theme="dark"] {
+    color: #f3f4f6 !important;
+    background-color: #181c24 !important;
+}
+
+/* All headings - pure white for maximum contrast */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] .heading,
+[data-theme="dark"] .title,
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .card-title,
+[data-theme="dark"] .widget-title {
+    color: #ffffff !important;
+}
+
+/* All paragraph and span text */
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] div,
+[data-theme="dark"] label,
+[data-theme="dark"] li,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] .text,
+[data-theme="dark"] .description {
+    color: #e5e7eb !important;
+}
+
+/* Secondary/muted text */
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .secondary-text,
+[data-theme="dark"] .muted,
+[data-theme="dark"] small,
+[data-theme="dark"] .small,
+[data-theme="dark"] .subtitle {
+    color: #9ca3af !important;
+}
+
+/* Links - bright blue for visibility */
+[data-theme="dark"] a,
+[data-theme="dark"] a:link,
+[data-theme="dark"] a:visited {
+    color: #60a5fa !important;
+}
+
+[data-theme="dark"] a:hover,
+[data-theme="dark"] a:active {
+    color: #93c5fd !important;
+}
+
+/* Form elements */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .form-control {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid #374151 !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: #9ca3af !important;
+    opacity: 1;
+}
+
+/* Buttons */
+[data-theme="dark"] button,
+[data-theme="dark"] .btn,
+[data-theme="dark"] input[type="submit"],
+[data-theme="dark"] input[type="button"] {
+    color: #ffffff !important;
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+}
+
+/* Cards and containers */
+[data-theme="dark"] .card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .widget,
+[data-theme="dark"] .container,
+[data-theme="dark"] .section-box,
+[data-theme="dark"] .floating-card {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border-color: #374151 !important;
+}
+
+/* Team cards specific */
+[data-theme="dark"] .team-card,
+[data-theme="dark"] .team-member-box {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .team-card .name,
+[data-theme="dark"] .team-card .role,
+[data-theme="dark"] .team-name,
+[data-theme="dark"] .team-role {
+    color: #ffffff !important;
+}
+
+/* Dashboard specific */
+[data-theme="dark"] .kpi-card,
+[data-theme="dark"] .chart-card,
+[data-theme="dark"] .objectives-card,
+[data-theme="dark"] .profile-card {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .kpi-value,
+[data-theme="dark"] .stat-number,
+[data-theme="dark"] .metric-value {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .kpi-label,
+[data-theme="dark"] .stat-label,
+[data-theme="dark"] .metric-label {
+    color: #e5e7eb !important;
+}
+
+/* Navigation */
+[data-theme="dark"] .navbar,
+[data-theme="dark"] .nav {
+    background: #111827 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .nav-link,
+[data-theme="dark"] .navbar a {
+    color: #d1d5db !important;
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .navbar a:hover,
+[data-theme="dark"] .nav-link.active {
+    color: #60a5fa !important;
+}
+
+/* Tables */
+[data-theme="dark"] table,
+[data-theme="dark"] thead,
+[data-theme="dark"] tbody,
+[data-theme="dark"] tr,
+[data-theme="dark"] th,
+[data-theme="dark"] td {
+    color: #f3f4f6 !important;
+    background: transparent !important;
+    border-color: #374151 !important;
+}
+
+/* Modals and dropdowns */
+[data-theme="dark"] .modal,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .dropdown,
+[data-theme="dark"] .dropdown-menu {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border-color: #374151 !important;
+}
+
+/* Notifications */
+[data-theme="dark"] .notification,
+[data-theme="dark"] .alert,
+[data-theme="dark"] .toast {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border-color: #374151 !important;
+}
+
+/* Success, warning, error states */
+[data-theme="dark"] .text-success,
+[data-theme="dark"] .success {
+    color: #10b981 !important;
+}
+
+[data-theme="dark"] .text-warning,
+[data-theme="dark"] .warning {
+    color: #f59e0b !important;
+}
+
+[data-theme="dark"] .text-danger,
+[data-theme="dark"] .text-error,
+[data-theme="dark"] .error {
+    color: #ef4444 !important;
+}
+
+/* Chatbot messages */
+[data-theme="dark"] .chatbot-message {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .chatbot-message.user {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .chatbot-message.bot {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border-left: 3px solid #3b82f6;
+}
+
+/* Lists and list items */
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li {
+    color: #e5e7eb !important;
+}
+
+/* Code and pre elements */
+[data-theme="dark"] code,
+[data-theme="dark"] pre {
+    background: #111827 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid #374151 !important;
+}
+
+/* Icons - ensure they inherit color */
+[data-theme="dark"] i,
+[data-theme="dark"] .icon,
+[data-theme="dark"] .fa,
+[data-theme="dark"] .fas,
+[data-theme="dark"] .far,
+[data-theme="dark"] .fab {
+    color: inherit !important;
+}
+
+/* Specific problem areas */
+[data-theme="dark"] .feature-slide,
+[data-theme="dark"] .impact-slide,
+[data-theme="dark"] .hero-section,
+[data-theme="dark"] .about-section,
+[data-theme="dark"] .contact-section {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .feature-slide h3,
+[data-theme="dark"] .impact-slide h3,
+[data-theme="dark"] .section h3 {
+    color: #ffffff !important;
+}
+
+/* === COMPREHENSIVE DARK MODE TEXT VISIBILITY FIXES === */
+/* Override any remaining text visibility issues */
+
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .section-subtitle,
+[data-theme="dark"] .card-title,
+[data-theme="dark"] .widget-title {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .kpi-value,
+[data-theme="dark"] .stat-number,
+[data-theme="dark"] .metric-value {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .kpi-label,
+[data-theme="dark"] .stat-label,
+[data-theme="dark"] .metric-label {
+    color: var(--text-secondary) !important;
+}
+
+/* Team cards and profile elements */
+[data-theme="dark"] .team-name,
+[data-theme="dark"] .team-role,
+[data-theme="dark"] .profile-name,
+[data-theme="dark"] .profile-role {
+    color: #ffffff !important;
+}
+
+/* Objective and task elements */
+[data-theme="dark"] .objective-title,
+[data-theme="dark"] .task-title,
+[data-theme="dark"] .progress-text {
+    color: #f3f4f6 !important;
+}
+
+/* Links and interactive elements */
+[data-theme="dark"] a,
+[data-theme="dark"] a:visited {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] a:hover {
+    color: var(--primary-hover) !important;
+}
+
+/* Notification and alert elements */
+[data-theme="dark"] .notification-item,
+[data-theme="dark"] .alert,
+[data-theme="dark"] .banner {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Footer and small text */
+[data-theme="dark"] .footer,
+[data-theme="dark"] .copyright,
+[data-theme="dark"] .small-text {
+    color: var(--text-secondary) !important;
+}
+
+/* Form labels and help text */
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .help-text,
+[data-theme="dark"] .form-help {
+    color: var(--text-primary) !important;
+}
+
+/* Chart labels and legends */
+[data-theme="dark"] .chart-label,
+[data-theme="dark"] .legend-item,
+[data-theme="dark"] .axis-label {
+    color: var(--text-primary) !important;
+}
+
+/* Modal and popup content */
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .popup-content,
+[data-theme="dark"] .dropdown-content {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Contact form and feedback sections */
+[data-theme="dark"] .contact-form,
+[data-theme="dark"] .feedback-form,
+[data-theme="dark"] .contact-section {
+    color: var(--text-primary) !important;
+}
+
+/* Mission map and special sections */
+[data-theme="dark"] .mission-map,
+[data-theme="dark"] .demo-section,
+[data-theme="dark"] .advanced-features {
+    color: var(--text-primary) !important;
+}
+
+/* Ensure all text elements are visible */
+[data-theme="dark"] * {
+    color: inherit;
+}
+
+/* Force visibility for stubborn elements */
+[data-theme="dark"] .hidden-text,
+[data-theme="dark"] .invisible-text {
+    color: var(--text-primary) !important;
+}
+
+/* Override any inherited light colors */
+[data-theme="dark"] .dark-override,
+[data-theme="dark"] .force-dark-text {
+    color: #f3f4f6 !important;
+    background: transparent !important;
+}
+
+/* Ensure visibility for specific UI elements */
+[data-theme="dark"] .progress-text,
+[data-theme="dark"] .objective-title,
+[data-theme="dark"] .priority-badge {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .complete-btn {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .complete-btn:disabled {
+    background: #6b7280 !important;
+    color: #d1d5db !important;
+}
+
+/* Footer */
+[data-theme="dark"] footer,
+[data-theme="dark"] .footer {
+    background: #111827 !important;
+    color: #f3f4f6 !important;
+}
+
+/* Tooltips */
+[data-theme="dark"] .tooltip,
+[data-theme="dark"] .info-tooltip {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid #374151 !important;
+}
+
+/* ========== END DARK MODE FIXES ========== */
+
+/* Feedback form specific fixes (dark mode) */
+[data-theme="dark"] #citizenFeedbackForm,
+[data-theme="dark"] .feedback-form {
+    background: #0f1720 !important; /* dark panel */
+    color: #e6eef8 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+[data-theme="dark"] #citizenFeedbackForm input,
+[data-theme="dark"] #citizenFeedbackForm textarea,
+[data-theme="dark"] .feedback-form input,
+[data-theme="dark"] .feedback-form textarea {
+    background: #0b0f13 !important;
+    color: #e6eef8 !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+[data-theme="dark"] #citizenFeedbackForm input::placeholder,
+[data-theme="dark"] #citizenFeedbackForm textarea::placeholder,
+[data-theme="dark"] .feedback-form input::placeholder,
+[data-theme="dark"] .feedback-form textarea::placeholder {
+    color: #9aa4b0 !important;
+    opacity: 1;
+}
+
+[data-theme="dark"] #citizenFeedbackForm button[type="submit"],
+[data-theme="dark"] .feedback-form button[type="submit"] {
+    background: #2563eb !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+/* Rendered feedback list entries */
+[data-theme="dark"] #citizenFeedbackList > div,
+[data-theme="dark"] .feedback-list > div {
+    background: rgba(255,255,255,0.03) !important;
+    color: #e6eef8 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+[data-theme="dark"] #citizenFeedbackList .time,
+[data-theme="dark"] .feedback-list .time {
+    color: #9aa4b0 !important;
+}
+
+/* Real Impact Section dark mode fixes - COMPREHENSIVE */
+[data-theme="dark"] .real-impact-section,
+[data-theme="dark"] #real-impact {
+    background: #0f1720 !important;
+    color: #e6eef8 !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+/* Impact Stats Boxes - Main fix for visibility */
+[data-theme="dark"] .impact-stat {
+    background: rgba(30, 41, 59, 0.8) !important; /* Dark slate background */
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .impact-stat:hover {
+    background: rgba(30, 41, 59, 0.9) !important;
+    transform: translateY(-4px);
+}
+
+/* Impact Numbers - Make them bright and visible */
+[data-theme="dark"] .impact-number {
+    color: #22d3ee !important; /* Bright cyan for high contrast */
+    font-weight: 900 !important;
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.3) !important;
+}
+
+[data-theme="dark"] #citizensImpacted,
+[data-theme="dark"] #moneySaved,
+[data-theme="dark"] #timeReduced,
+[data-theme="dark"] #sustainabilityScore {
+    color: #22d3ee !important; /* Bright cyan for visibility */
+    font-weight: 900 !important;
+}
+
+/* Impact Labels - Light gray for readability */
+[data-theme="dark"] .impact-label {
+    color: #cbd5e1 !important; /* Light slate for contrast */
+    font-weight: 600 !important;
+    text-transform: uppercase;
+}
+
+/* Impact Icons - Keep them bright */
+[data-theme="dark"] .impact-icon {
+    filter: brightness(1.2) !important;
+    opacity: 1 !important;
+}
+
+/* Chart title in impact tracker */
+[data-theme="dark"] .impact-tracker .chart-title {
+    color: #f1f5f9 !important;
+}
+
+/* Impact message text */
+[data-theme="dark"] .impact-message,
+[data-theme="dark"] .impact-message p,
+[data-theme="dark"] .impact-message strong {
+    color: #e2e8f0 !important;
+}
+
+/* Counter animations and other impact items */
+[data-theme="dark"] .counter-value,
+[data-theme="dark"] .real-impact-item {
+    color: #22d3ee !important;
+    font-weight: 700 !important;
+}
+
+/* Impact Counter Boxes - Dark Mode (animate-counter class) */
+[data-theme="dark"] .impact-counter {
+    background: rgba(30, 41, 59, 0.9) !important; /* Dark slate background */
+    color: #f1f5f9 !important;
+    border: 2px solid rgba(255,255,255,0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .impact-counter:hover {
+    background: rgba(30, 41, 59, 1) !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(34, 211, 238, 0.3) !important;
+}
+
+[data-theme="dark"] .impact-counter::before {
+    background: linear-gradient(90deg, #22d3ee 0%, #0891b2 100%) !important;
+}
+
+/* Counter Numbers - Make them bright cyan */
+[data-theme="dark"] .counter-number {
+    color: #22d3ee !important; /* Bright cyan */
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.4) !important;
+}
+
+[data-theme="dark"] .counter-suffix {
+    color: #22d3ee !important; /* Same bright cyan */
+}
+
+/* Counter Labels - Light text */
+[data-theme="dark"] .counter-label {
+    color: #cbd5e1 !important; /* Light slate */
+    font-weight: 700 !important;
+}
+
+/* Counter Examples - Muted text */
+[data-theme="dark"] .counter-example {
+    color: #94a3b8 !important; /* Muted slate */
+}
+
+/* Counter Icons - Keep them visible */
+[data-theme="dark"] .counter-icon {
+    filter: brightness(1.2) contrast(1.1) !important;
+    opacity: 1 !important;
+}
+
+/* Testimonial Section - Dark Mode Fixes */
+[data-theme="dark"] .impact-testimonial,
+[data-theme="dark"] .testimonial-card {
+    background: rgba(30, 41, 59, 0.8) !important;
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+[data-theme="dark"] .testimonial-card::before {
+    background: linear-gradient(90deg, #22d3ee 0%, #0891b2 100%) !important;
+    height: 4px !important;
+}
+
+[data-theme="dark"] .testimonial-quote {
+    color: #e2e8f0 !important; /* Light text for quote */
+    font-weight: 600 !important;
+}
+
+[data-theme="dark"] .testimonial-author {
+    color: #22d3ee !important; /* Bright cyan for author name */
+    font-weight: 700 !important;
+}
+
+[data-theme="dark"] .testimonial-impact {
+    color: #94a3b8 !important; /* Muted slate for impact text */
+}
+
+/* Comparison Items - Dark Mode Fixes */
+[data-theme="dark"] .comparison-item {
+    background: rgba(30, 41, 59, 0.8) !important;
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .comparison-label {
+    color: #cbd5e1 !important; /* Light slate for labels */
+    font-weight: 600 !important;
+}
+
+[data-theme="dark"] .comparison-value {
+    color: #e2e8f0 !important; /* Light text for values */
+    font-weight: 700 !important;
+}
+
+[data-theme="dark"] .comparison-value.user {
+    color: #22d3ee !important; /* Bright cyan for user values */
+}
+
+[data-theme="dark"] .comparison-value.team {
+    color: #94a3b8 !important; /* Muted slate for team averages */
+    font-weight: 500 !important;
+}
+
+/* Gamification & Leaderboard - Dark Mode Fixes */
+[data-theme="dark"] .gamification-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    color: #f1f5f9 !important;
+    border: 2px solid #fbbf24 !important;
+}
+
+[data-theme="dark"] .leaderboard-section,
+[data-theme="dark"] .leaderboard-title {
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .leaderboard-list li {
+    background: rgba(30, 41, 59, 0.7) !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+[data-theme="dark"] .leaderboard-rank {
+    background: #fbbf24 !important; /* Keep gold background */
+    color: #0f172a !important; /* Dark text for contrast */
+    font-weight: 800 !important;
+}
+
+[data-theme="dark"] .leaderboard-score {
+    color: #22d3ee !important; /* Bright cyan for scores */
+    font-weight: 700 !important;
+}
+
+/* Badge cards in gamification */
+[data-theme="dark"] .badge-card {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .badge-label {
+    color: #fbbf24 !important; /* Gold color for badge labels */
+    font-weight: 700 !important;
+}
+
+/* Performance Overview KPI Cards - Dark Mode Fix */
+[data-theme="dark"] .kpi-card {
+    background: rgba(30, 41, 59, 0.9) !important;
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .kpi-card:hover {
+    background: rgba(30, 41, 59, 1) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* KPI Values - Make them bright and visible */
+[data-theme="dark"] .kpi-value,
+[data-theme="dark"] #pvsScore,
+[data-theme="dark"] #ckpPoints,
+[data-theme="dark"] #objectives,
+[data-theme="dark"] #highPriority {
+    color: #22d3ee !important; /* Bright cyan for high contrast */
+    font-weight: 900 !important;
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.3) !important;
+}
+
+/* KPI Labels - Light text for readability */
+[data-theme="dark"] .kpi-label {
+    color: #cbd5e1 !important; /* Light slate for labels */
+    font-weight: 600 !important;
+}
+
+/* KPI Card color variants in dark mode */
+[data-theme="dark"] .kpi-card.purple::before {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+}
+
+[data-theme="dark"] .kpi-card.blue::before {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+}
+
+[data-theme="dark"] .kpi-card.green::before {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+[data-theme="dark"] .kpi-card.orange::before {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+

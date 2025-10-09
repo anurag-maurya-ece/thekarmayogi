@@ -21,42 +21,7 @@
 <body>
 
 
-        <!-- Unique Orange Gradient Animated Curtain Loader -->
-        <div id="curtain-loader">
-            <div class="curtain-orange left"></div>
-            <div class="curtain-orange right"></div>
-                    <div class="curtain-center-logo">
-                        <svg class="curtain-sun" width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="130" cy="130" r="120" stroke="#fff" stroke-width="4" fill="url(#orangeGrad)"/>
-                            <defs>
-                                <radialGradient id="orangeGrad" cx="0.5" cy="0.5" r="0.7">
-                                    <stop offset="0%" stop-color="#fffbe7"/>
-                                    <stop offset="60%" stop-color="#ff9800"/>
-                                    <stop offset="100%" stop-color="#ff6d00"/>
-                                </radialGradient>
-                            </defs>
-                            <g class="sun-rays">
-                                <ellipse cx="130" cy="30" rx="18" ry="60" fill="url(#sunRayGrad)" opacity="0.45">
-                                    <animate attributeName="opacity" values="0.45;0.9;0.45" dur="2.2s" repeatCount="indefinite"/>
-                                </ellipse>
-                                <ellipse cx="130" cy="230" rx="18" ry="60" fill="url(#sunRayGrad)" opacity="0.45"/>
-                                <ellipse cx="30" cy="130" rx="60" ry="18" fill="url(#sunRayGrad)" opacity="0.45"/>
-                                <ellipse cx="230" cy="130" rx="60" ry="18" fill="url(#sunRayGrad)" opacity="0.45"/>
-                                <ellipse cx="60" cy="60" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
-                                <ellipse cx="200" cy="60" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
-                                <ellipse cx="60" cy="200" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
-                                <ellipse cx="200" cy="200" rx="30" ry="10" fill="url(#sunRayGrad)" opacity="0.25"/>
-                                <defs>
-                                    <radialGradient id="sunRayGrad" cx="0.5" cy="0.5" r="0.7">
-                                        <stop offset="0%" stop-color="#fffbe7"/>
-                                        <stop offset="100%" stop-color="#ff9800" stop-opacity="0.2"/>
-                                    </radialGradient>
-                                </defs>
-                            </g>
-                        </svg>
-                        <div class="curtain-title">Karmayogi Path</div>
-                    </div>
-        </div>
+
 
 
 
@@ -92,74 +57,7 @@
                 <div class="shape shape5"></div>
             </div>
         </div>
-                <script>
-                        // Celebration: Paper bomb blast effect from sides, slow and synchronized with sound
-                                function createPaperBombsSync(audio) {
-                                    const confettiContainer = document.querySelector('.celebration-confetti');
-                                    if (!confettiContainer) return;
-                                    confettiContainer.innerHTML = '';
-                                    // Paper bombs from all 4 directions
-                                    setTimeout(() => {
-                                        const directions = [
-                                            {x: '-40px', y: () => (5 + Math.random() * 90) + 'vh', dx: '1', dy: '0'}, // left
-                                            {x: 'calc(100% + 40px)', y: () => (5 + Math.random() * 90) + 'vh', dx: '-1', dy: '0'}, // right
-                                            {x: () => (5 + Math.random() * 90) + 'vw', y: '-40px', dx: '0', dy: '1'}, // top
-                                            {x: () => (5 + Math.random() * 90) + 'vw', y: 'calc(100% + 40px)', dx: '0', dy: '-1'} // bottom
-                                        ];
-                                        for (let d = 0; d < directions.length; d++) {
-                                            for (let i = 0; i < 14; i++) {
-                                                const bomb = document.createElement('div');
-                                                bomb.className = 'paper-bomb';
-                                                bomb.style.left = typeof directions[d].x === 'function' ? directions[d].x() : directions[d].x;
-                                                bomb.style.top = typeof directions[d].y === 'function' ? directions[d].y() : directions[d].y;
-                                                bomb.style.background = d % 2 === 0 ? 'linear-gradient(135deg,#38bdf8,#a78bfa)' : 'linear-gradient(135deg,#fbbf24,#f472b6)';
-                                                bomb.style.animationDelay = (Math.random() * 0.25) + 's';
-                                                bomb.style.setProperty('--bomb-dir-x', directions[d].dx);
-                                                bomb.style.setProperty('--bomb-dir-y', directions[d].dy);
-                                                confettiContainer.appendChild(bomb);
-                                            }
-                                        }
-                                        // Paper pieces (covering screen, slower)
-                                        for (let i = 0; i < 80; i++) {
-                                            const piece = document.createElement('div');
-                                            piece.className = 'confetti-piece';
-                                            piece.style.left = Math.random() * 100 + 'vw';
-                                            piece.style.top = '-40px';
-                                            piece.style.background = `linear-gradient(135deg, #38bdf8, #a78bfa, #fbbf24, #f472b6)`;
-                                            piece.style.animationDelay = (0.5 + Math.random() * 1.2) + 's';
-                                            confettiContainer.appendChild(piece);
-                                        }
-                                    }, audio ? 200 : 0);
-                                }
-                        // Patch showCelebration to use paper bombs and sync with sound
-                                window.showCelebration = async function(objective) {
-                                    const overlay = document.getElementById('celebrationOverlay');
-                                    const msg = document.getElementById('celebrationMsg');
-                                    const benefits = document.getElementById('celebrationBenefits');
-                                    if (!overlay || !msg || !benefits) return;
-                                    overlay.style.animation = 'none'; overlay.offsetHeight; overlay.style.animation = null;
-                                    document.body.style.overflow = 'hidden';
-                                    msg.textContent = `Objective "${objective.title}" completed! Here are your benefits:`;
-                                    const benefitList = [
-                                        'Society benefited: Improved public service delivery',
-                                        'Increased citizen satisfaction',
-                                        'Enhanced transparency and accountability',
-                                        'Boosted team morale and collaboration',
-                                        'Positive impact on national mission goals',
-                                        'Recognition for your contribution to society',
-                                        'Performance score increased',
-                                        'Eligible for new rewards',
-                                        'Motivation boost!'
-                                    ];
-                                    benefits.innerHTML = benefitList.map(b => `<li>✅ ${b}</li>`).join('');
-                                    overlay.style.display = 'flex';
-                                    // Play sound, then trigger paper bombs exactly when sound starts
-                                    const audio = new Audio('https://soundbible.com/mp3/Ta Da-SoundBible.com-1884170640.mp3');
-                                    audio.volume = 0.5;
-                                    audio.onplay = function() { createPaperBombsSync(audio); };
-                                    audio.play().catch(()=>{ createPaperBombsSync(audio); });
-                                };
-                </script>
+
 
 
 
@@ -231,15 +129,23 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 3D Man Working on Laptop (reliable GLB) on the right -->
-                    <div style="min-width:220px;max-width:320px;width:24vw;height:320px;display:flex;align-items:center;justify-content:center;">
-                        <model-viewer id="hero-3d-worker" src="https://models.readyplayer.me/64e4e2e7e7e7e70008e7e7e7.glb" alt="3D Man Working on Laptop" camera-controls auto-rotate style="width:100%;height:320px;background:transparent;" shadow-intensity="1" exposure="1.1"></model-viewer>
-                        <model-viewer id="hero-3d-worker" src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/AnimatedCube/glTF-Binary/AnimatedCube.glb" alt="3D Man Working on Laptop" camera-controls auto-rotate style="width:100%;height:320px;background:transparent;" shadow-intensity="1" exposure="1.1"></model-viewer>
-                        <model-viewer id="hero-3d-worker" src="https://models.babylonjs.com/CesiumMan.glb" alt="3D Human Model" camera-controls auto-rotate style="width:100%;height:320px;background:transparent;" shadow-intensity="1" exposure="1.1"></model-viewer>
-                        <!-- Lottie Animation: Man working on laptop (local file) -->
-                        <div style="display:flex;align-items:center;height:100%;">
-                            <lottie-player src="media/Man Working on Laptop in Office.json" background="transparent" speed="1" style="height:720px;max-height:720px;min-width:480px;width:auto;max-width:900px;margin-left:auto;display:block;" loop autoplay></lottie-player>
+                    <!-- Hero Animation Container -->
+                    <div class="hero-animation-container" style="min-width:220px;max-width:320px;width:24vw;height:320px;display:flex;align-items:center;justify-content:center;position:relative;">
+                        <!-- Primary: Lottie Animation (most reliable) -->
+                        <div class="hero-lottie-wrapper" style="display:flex;align-items:center;height:100%;position:relative;z-index:2;">
+                            <lottie-player 
+                                id="hero-lottie-animation"
+                                src="../media/Man Working on Laptop in Office.json" 
+                                background="transparent" 
+                                speed="1" 
+                                style="height:320px;width:320px;margin-left:auto;display:block;" 
+                                loop 
+                                autoplay>
+                            </lottie-player>
                         </div>
+                        
+                        <!-- Fallback: CSS animation if Lottie fails -->
+                        <div class="hero-fallback-animation" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;background:linear-gradient(45deg,var(--primary),var(--accent));opacity:0.1;animation:pulse 2s infinite;z-index:1;"></div>
                     </div>
                 </div>
                 <!-- Moved Goal Tracking card below hero image -->
@@ -593,7 +499,7 @@
             <!-- Profile Card -->
             <div class="profile-card animate-fade-in">
                 <div class="profile-avatar" style="position:relative;">
-                    <img src="media/Vaishnavi .jpg" alt="Vaishnavi Gupta" style="object-fit:cover;width:100px;height:100px;border-radius:50%;border:3px solid #38bdf8;box-shadow:0 2px 8px #0002;" />
+                    <img src="../media/Vaishnavi .jpg" alt="Vaishnavi Gupta" style="object-fit:cover;width:100px;height:100px;border-radius:50%;border:3px solid #38bdf8;box-shadow:0 2px 8px #0002;" />
                 </div>
                 <div class="profile-info">
                     <h2 id="profileName">Vaishnavi Gupta</h2>
@@ -749,7 +655,7 @@
                 <div class="team-room-grid">
                     <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #22c55e;gap:8px;">
                         <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#fbbf24;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                            <img src="media/anurag maurya.jpg" alt="Anurag Maurya" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="../media/anurag maurya.jpg" alt="Anurag Maurya" style="width:100%;height:100%;object-fit:cover;" />
                         </div>
                         <div class="team-name" style="font-weight:700;font-size:1.08em;">Anurag Maurya</div>
                         <div class="team-role" style="font-size:0.98em;color:#16a34a;">Team Lead, Visionary & Web Developer</div>
@@ -758,7 +664,7 @@
                     </div>
                     <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #38bdf8;gap:8px;">
                         <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#38bdf8;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                            <img src="media/Vaishnavi .jpg" alt="Vaishnavi Gupta" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="../media/Vaishnavi .jpg" alt="Vaishnavi Gupta" style="width:100%;height:100%;object-fit:cover;" />
                         </div>
                         <div class="team-name" style="font-weight:700;font-size:1.08em;">Vaishnavi Gupta</div>
                         <div class="team-role" style="font-size:0.98em;color:#38bdf8;">UI/UX & Presentation Designer</div>
@@ -767,7 +673,7 @@
                     </div>
                     <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #22c55e;gap:8px;">
                         <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#22c55e;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                            <img src="media/mayank.jpg" alt="Mayank Kumar" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="../media/mayank.jpg" alt="Mayank Kumar" style="width:100%;height:100%;object-fit:cover;" />
                         </div>
                         <div class="team-name" style="font-weight:700;font-size:1.08em;">Mayank Kumar</div>
                         <div class="team-role" style="font-size:0.98em;color:#22c55e;">Core Web Developer</div>
@@ -776,7 +682,7 @@
                     </div>
                     <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #a78bfa;gap:8px;">
                         <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#a78bfa;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                            <img src="media/Sia.jpg" alt="Sia" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="../media/Sia.jpg" alt="Sia" style="width:100%;height:100%;object-fit:cover;" />
                         </div>
                         <div class="team-name" style="font-weight:700;font-size:1.08em;">Sia</div>
                         <div class="team-role" style="font-size:0.98em;color:#a78bfa;">Presentation Specialist</div>
@@ -785,7 +691,7 @@
                     </div>
                     <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #f472b6;gap:8px;">
                         <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#f472b6;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                            <img src="media/smarath.jpg" alt="Smarth" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="../media/smarath.jpg" alt="Smarth" style="width:100%;height:100%;object-fit:cover;" />
                         </div>
                         <div class="team-name" style="font-weight:700;font-size:1.08em;">Smarth</div>
                         <div class="team-role" style="font-size:0.98em;color:#f472b6;">Quality Assurance (QA) Analyst</div>
@@ -794,7 +700,7 @@
                     </div>
                     <div class="team-member-box" style="background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 100%);border-radius:16px;box-shadow:0 2px 12px #0001;padding:20px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;min-width:200px;max-width:240px;border:2px solid #ff9800;gap:8px;">
                         <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#ff9800;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                            <img src="media/shaina2.jpg" alt="Shaina" style="width:100%;height:100%;object-fit:cover;" />
+                            <img src="../media/shaina2.jpg" alt="Shaina" style="width:100%;height:100%;object-fit:cover;" />
                         </div>
                         <div class="team-name" style="font-weight:700;font-size:1.08em;">Shaina</div>
                         <div class="team-role" style="font-size:0.98em;color:#ff9800;">Lead Presenter</div>
@@ -1280,10 +1186,7 @@
                 });
                 </script>
                 <script src="script.js"></script>
-        <script src="celebration.js"></script>
-        <script src="config.js"></script>
-        <script src="bot-features.js"></script>
-        <script src="yogi-bot.js"></script>
+                <script src="data.js"></script>
         <!-- Ensured model-viewer loads before script.js and added browser support check -->
         <script>
 // Force dark mode by default unless user has set a theme
